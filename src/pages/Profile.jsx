@@ -33,6 +33,7 @@ export default function Profile() {
         setUploadPercentage(Math.round(progress));
       },
       (error) => {
+        console.log(error);
         setUploadError(true);
       },
       () => {
@@ -73,9 +74,7 @@ export default function Profile() {
           ) : uploadPercentage > 0 && uploadPercentage < 100 ? (
             <span className="text-slate-700">{`Uploading file ${uploadPercentage}`}</span>
           ) : uploadPercentage === 100 ? (
-            <span className="text-green-700">
-              Image Successfully Uploaded!{" "}
-            </span>
+            <span className="text-green-700">Image Successfully Uploaded!</span>
           ) : (
             ""
           )}
