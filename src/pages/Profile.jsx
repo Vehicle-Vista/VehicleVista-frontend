@@ -22,7 +22,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
-  const { user, loading, error } = useSelector((state) => state.user);
+  const { currentUser, loading, error } = useSelector((state) => state.user);
   const fileRef = useRef(null);
   const [file, setFile] = useState(undefined);
   const [uploadPercentage, setUploadPercentage] = useState(0);
@@ -76,7 +76,7 @@ export default function Profile() {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
-      const res = await fetch(`/server/user/update/${user._id}`, {
+      const res = await fetch(`/server/user/update/${currentUser._id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -98,7 +98,7 @@ export default function Profile() {
   const handleDelete = async () => {
     try {
       dispatch(deleteUserStart());
-      const res = await fetch(`/server/user/delete/${user._id}`, {
+      const res = await fetch(`/server/user/delete/${currentUser._id}`, {
         method: "DELETE",
       });
       const data = res.json();
@@ -139,7 +139,7 @@ export default function Profile() {
           accept="image/*"
         />
         <img
-          src={formData.avatar || user.avatar}
+          src={formData.avatar || currentUser.avatar}
           onClick={() => fileRef.current.click()}
           alt="profile-picture"
           className="rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2"
@@ -161,7 +161,7 @@ export default function Profile() {
           id="username"
           type="text"
           placeholder="Username"
-          defaultValue={user.username}
+          defaultValue={currentUser.username}
           className="border p-3 rounded-lg"
           onChange={handleChange}
         />
@@ -169,7 +169,7 @@ export default function Profile() {
           id="email"
           type="email"
           placeholder="Email"
-          defaultValue={user.email}
+          defaultValue={currentUser.email}
           className="border p-3 rounded-lg"
           onChange={handleChange}
         />
