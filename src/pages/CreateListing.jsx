@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 export default function CreateListing() {
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
-    imageUrls: [],
+    imageURLs: [],
     name: "",
     description: "",
     location: "",
@@ -32,7 +32,7 @@ export default function CreateListing() {
   const navigate = useNavigate();
   // eslint-disable-next-line no-unused-vars
   const handleImageSubmit = (e) => {
-    if (files.length > 0 && files.length < 7) {
+    if (files.length > 0 && files.length < 7 + formData.imageURLs.length < 7) {
       setUploading(true);
       setImageUploadError(false);
       const promises = [];
@@ -43,7 +43,7 @@ export default function CreateListing() {
         .then((urls) => {
           setFormData({
             ...formData,
-            imageUrls: formData.imageUrls.concat(urls),
+            imageURLs: formData.imageURLs.concat(urls),
           });
           setImageUploadError(false);
           setUploading(false);
@@ -87,7 +87,7 @@ export default function CreateListing() {
   const handleDeleteImage = (index) => {
     setFormData({
       ...formData,
-      imageUrls: formData.imageUrls.filter((_, i) => i !== index),
+      imageURLs: formData.imageURLs.filter((_, i) => i !== index),
     });
   };
 
@@ -112,9 +112,13 @@ export default function CreateListing() {
     }
   };
 
+  console.log(formData);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      if (formData.imageURLs.length < 1)
+        return setError("You must upload at least one image");
       setLoading(true);
       setError(false);
       const res = await fetch("/server/listing/create", {
@@ -305,8 +309,8 @@ export default function CreateListing() {
           <p className="text-red-600 text-sm">
             {imageUploadError && imageUploadError}
           </p>
-          {formData.imageUrls.length > 0 &&
-            formData.imageUrls.map((url, index) => (
+          {formData.imageURLs.length > 0 &&
+            formData.imageURLs.map((url, index) => (
               <div
                 key={url}
                 className="flex justify-between p-3 border items-center">
