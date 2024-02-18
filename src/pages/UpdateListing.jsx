@@ -114,8 +114,6 @@ export default function CreateListing() {
     }
   };
 
-  console.log(formData);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
